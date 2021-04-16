@@ -4,3 +4,4 @@ numpy==1.20.1
 streamlit==0.79.0
 unidecode==1.2.0
 contractions==0.0.48
+nltk==3.5
