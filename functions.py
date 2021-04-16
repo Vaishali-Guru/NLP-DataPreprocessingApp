@@ -96,7 +96,32 @@ def upload_file():
         st.dataframe(df.head(10))
 
         cat_cols = list(set(list(df.select_dtypes(include = ['object']).columns)))
-        st.write(f"Selected Categorical Columns: **{', '.join(cat_cols)}**")
+        
+        total_cols = len(cat_cols)
+        num_cols = 2
+        num_each_col = total_cols//num_cols
+
+        st.write('Select the columns to preprocess: ')
+
+        col1, col2 = st.beta_columns(num_cols)
+
+        selected_cols = []
+        for col in cat_cols[:num_each_col+1]:
+            with col1:
+                x = st.checkbox(f'{col}', value = True)
+                selected_cols.append(x)
+        
+        for col in cat_cols[num_each_col+1:]:
+            with col2:
+                x = st.checkbox(f'{col}', value = True)
+                selected_cols.append(x)
+
+        current_selection = []
+        for col, val in zip(cat_cols, selected_cols):
+            if val == True:
+                current_selection.append(col)
+        
+        st.write(f"Selected Categorical Columns: **{', '.join(current_selection)}**")
 
         _, col1, _ = st.beta_columns([2, 1, 2])
 
@@ -104,7 +129,7 @@ def upload_file():
             inp_btn = st.button('Preprocess Data', key = 'start')
 
         if inp_btn:
-            for col in cat_cols:
+            for col in current_selection:
                 df[f'{col}_cleaned'] = df[col].dropna().apply(lambda x: tolower(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: unescape_htmlcharacters(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_accentedcharacters(x))
