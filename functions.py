@@ -88,11 +88,21 @@ def remove_extrawhitespaces(text):
 # Function to upload the file
 def upload_file():
 
-    inp_file = st.file_uploader('Upload a CSV file: ', type = ['csv'], key = 'input_file')
+    inp_file = st.file_uploader('Upload a CSV or Excel file: ', type = ['csv', 'xlsx', 'xls'], key = 'input_file')
 
     if(inp_file):
+        ext = inp_file.name.split('.')[1]
         st.success('File uploaded successfully')
-        df = pd.read_csv(inp_file)
+
+        if ext == 'csv':
+            df = pd.read_csv(inp_file, encoding = 'ISO-8859-1')
+
+        elif ext == 'xlsx':
+            df = pd.read_excel(inp_file, engine = 'openpyxl')
+
+        elif ext == 'xls':
+            df = pd.read_excel(inp_file)
+            
         st.dataframe(df.head(10))
 
         cat_cols = list(set(list(df.select_dtypes(include = ['object']).columns)))
