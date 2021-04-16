@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+from functions import *
+
 st.set_page_config(page_title = 'NLP-Data Preprocessing App', page_icon = ':shark:', layout = 'wide')
 
 _, col1, _ = st.beta_columns(3)
@@ -16,9 +18,4 @@ with c1:
 
 st.write('\n')
 
-inp_file = st.file_uploader('Upload a CSV file: ', type = ['csv'], key = 'input_file')
-
-if(inp_file):
-    st.success('File uploaded successfully')
-    df = pd.read_csv(inp_file)
-    st.dataframe(df.head(10))
+upload_file()
