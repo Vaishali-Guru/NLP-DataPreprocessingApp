@@ -8,6 +8,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
+import io
+import base64
 
 # nltk.download()
 en_stopwords = stopwords.words('english')
@@ -120,4 +122,12 @@ def upload_file():
 
             st.dataframe(df.head(10))
 
-            st.balloons()
+            _, c1, _ = st.beta_columns([2, 1, 2])
+
+            out_file = df.to_csv(index=False)
+            b64 = base64.b64encode(out_file.encode()).decode()
+
+            with c1:
+                href = f'<a href="data:file/csv;base64,{b64}">Download File</a>'
+                st.markdown(href, unsafe_allow_html=True)
+                st.balloons()
