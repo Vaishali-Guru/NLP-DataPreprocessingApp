@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
+from PIL import Image
 from functions import *
 
-st.set_page_config(page_title = 'NLP-Data Preprocessing App', page_icon = ':shark:', layout = 'wide')
+logo = Image.open('logo.png')
+
+st.set_page_config(page_title = 'NLP-Data Preprocessing App', page_icon = logo, layout = 'wide')
 
 _, col1, _ = st.beta_columns(3)
 
