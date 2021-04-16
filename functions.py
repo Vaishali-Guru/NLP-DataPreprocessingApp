@@ -4,6 +4,13 @@ import numpy as np
 import html
 import unidecode
 import contractions
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+
+# nltk.download()
+en_stopwords = stopwords.words('english')
+lemmatizer = WordNetLemmatizer()
 
 # Function to convert the text to lowercase
 def tolower(text):
@@ -23,6 +30,16 @@ def remove_accentedcharacters(text):
 # Function to expand contracted words - (i'll - i will, you're - you are, etc)
 def expand_contractions(text):
     text = contractions.fix(text)
+    return text
+
+# Function to remove stopwords
+def remove_stopwords(text):
+    text = ' '.join(word for word in text.split() if not word in en_stopwords)
+    return text
+
+# Function to perform word lemmatization - standardizing the words
+def lemmatization(text):
+    text = ' '.join(lemmatizer.lemmatize(word) for word in text.split())
     return text
 
 # Function to upload the file
@@ -49,6 +66,8 @@ def upload_file():
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: unescape_htmlcharacters(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_accentedcharacters(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: expand_contractions(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_stopwords(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: lemmatization(x))
 
             st.dataframe(df.head(10))
 
