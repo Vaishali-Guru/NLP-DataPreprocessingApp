@@ -7,6 +7,7 @@ import contractions
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+import re
 
 # nltk.download()
 en_stopwords = stopwords.words('english')
@@ -42,6 +43,31 @@ def lemmatization(text):
     text = ' '.join(lemmatizer.lemmatize(word) for word in text.split())
     return text
 
+# Function to remove website urls/links
+def remove_urls(text):
+    text = re.sub(r'(http|www)\S+', '', text)
+    return text
+
+# Function to remove mentions/usernames - @usernames
+def remove_mentions(text):
+    text = re.sub('@[^\s]+', '', text)
+    return text
+
+# Function to remove email addresses
+def remove_emailaddresses(text):
+    text = re.sub('[\w\._]+@[\w\.-]+', '', text)
+    return text
+
+# Function to remove punctuations and special characters
+def remove_specialcharacters(text):
+    text = re.sub('[^A-Za-z0-9]+', ' ', text)
+    return text
+
+# Function to remove digits and numbers
+def remove_digits(text):
+    text = re.sub('\d+', '', text)
+    return text
+
 # Function to upload the file
 def upload_file():
 
@@ -68,6 +94,11 @@ def upload_file():
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: expand_contractions(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_stopwords(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: lemmatization(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_urls(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_mentions(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_emailaddresses(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_specialcharacters(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_digits(x))
 
             st.dataframe(df.head(10))
 
