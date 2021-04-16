@@ -68,6 +68,21 @@ def remove_digits(text):
     text = re.sub('\d+', '', text)
     return text
 
+# Function to remove multiple(>2) repetitions of a single character in a word - (helloooooo - hello)
+def standardize_words(text):
+    text = re.sub(r'(.)\1{2,}', r'\1', text)
+    return text
+
+# Function to remove small words (words with 2 letter/characters or less)
+def remove_smallwords(text):
+    text = re.sub(r'\W*\b\w{1,2}\b', ' ', text)
+    return text
+
+# Function to remove extra whitespaces
+def remove_extrawhitespaces(text):
+    text = ' '.join(word.strip() for word in text.split())
+    return text
+
 # Function to upload the file
 def upload_file():
 
@@ -99,6 +114,9 @@ def upload_file():
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_emailaddresses(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_specialcharacters(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_digits(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: standardize_words(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_smallwords(x))
+                df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_extrawhitespaces(x))
 
             st.dataframe(df.head(10))
 
