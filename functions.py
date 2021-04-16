@@ -1,28 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import html
-import unidecode
-import contractions
 
 # Function to convert the text to lowercase
 def tolower(text):
     text = text.lower()
-    return text
-
-# Function to unescape HTML characters - (&amp - &, &lt - <, etc)
-def unescape_htmlcharacters(text):
-    text = html.unescape(text)
-    return text
-
-# Function to remove accented characters
-def remove_accentedcharacters(text):
-    text = unidecode.unidecode(text)
-    return text
-
-# Function to expand contracted words - (i'll - i will, you're - you are, etc)
-def expand_contractions(text):
-    text = contractions.fix(text)
     return text
 
 # Function to upload the file
