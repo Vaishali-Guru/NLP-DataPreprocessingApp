@@ -133,6 +133,12 @@ def upload_file():
         
         st.write(f"Selected Categorical Columns: **{', '.join(current_selection)}**")
 
+        e1 = st.beta_expander('Steps for using the App: ', expanded = True)
+        with e1:
+            st.markdown('1. Upload a CSV or Excel file to perform Data Cleaning on\n2. Tick the checkboxes to select the text columns to clean\n3. Click on Preprocess Data button to start data preprocessing\n4. See the sample of resultant dataset\n5. Click on Download File to download the resultant file')
+
+        st.write('\n')
+
         _, col1, _ = st.beta_columns([2, 1, 2])
 
         with col1:
