@@ -162,7 +162,22 @@ def upload_file():
             out_file = df.to_csv(index=False)
             b64 = base64.b64encode(out_file.encode()).decode()
 
-            with c1:
-                href = f'<a href="data:file/csv;base64,{b64}">Download File</a>'
-                st.markdown(href, unsafe_allow_html=True)
-                st.balloons()
+            buffer = io.StringIO()
+            df.info(verbose = False, memory_usage='deep', buf=buffer)
+            df_info = buffer.getvalue()
+
+            if 'MB' in df_info:
+                size = int(buffer.getvalue().split(': ')[-1].split(' MB')[0].split('.')[0])
+                if size > 50:
+                    st.error(f'Output file of exceeded the file size limit of 50MB. Try uploading a smaller file in order to download the output file!')
+                else:
+                    with c1:
+                        href = f'<a href="data:file/csv;base64,{b64}">Download File</a>'
+                        st.markdown(href, unsafe_allow_html=True)
+                        st.balloons()
+            
+            else:
+                with c1:
+                    href = f'<a href="data:file/csv;base64,{b64}">Download File</a>'
+                    st.markdown(href, unsafe_allow_html=True)
+                    st.balloons()
