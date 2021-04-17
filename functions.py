@@ -12,6 +12,7 @@ import io
 import base64
 
 nltk.download('stopwords')
+nltk.download('wordnet')
 en_stopwords = stopwords.words('english')
 lemmatizer = WordNetLemmatizer()
 
