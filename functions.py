@@ -103,7 +103,8 @@ def upload_file():
 
         elif ext == 'xls':
             df = pd.read_excel(inp_file)
-            
+        
+        st.write('**Input Data Preview: **')
         st.dataframe(df.head(10))
 
         cat_cols = list(set(list(df.select_dtypes(include = ['object']).columns)))
@@ -117,12 +118,12 @@ def upload_file():
         col1, col2 = st.beta_columns(num_cols)
 
         selected_cols = []
-        for col in cat_cols[:num_each_col+1]:
+        for col in cat_cols[:num_each_col]:
             with col1:
                 x = st.checkbox(f'{col}', value = True)
                 selected_cols.append(x)
         
-        for col in cat_cols[num_each_col+1:]:
+        for col in cat_cols[num_each_col:]:
             with col2:
                 x = st.checkbox(f'{col}', value = True)
                 selected_cols.append(x)
@@ -133,12 +134,6 @@ def upload_file():
                 current_selection.append(col)
         
         st.write(f"Selected Categorical Columns: **{', '.join(current_selection)}**")
-
-        e1 = st.beta_expander('Steps for using the App: ', expanded = True)
-        with e1:
-            st.markdown('1. Upload a CSV or Excel file to perform Data Cleaning on\n2. Tick the checkboxes to select the text columns to clean\n3. Click on Preprocess Data button to start data preprocessing\n4. See the sample of resultant dataset\n5. Click on Download File to download the resultant file')
-
-        st.write('\n')
 
         _, col1, _ = st.beta_columns([2, 1, 2])
 
@@ -162,6 +157,7 @@ def upload_file():
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_smallwords(x))
                 df[f'{col}_cleaned'] = df[f'{col}_cleaned'].dropna().apply(lambda x: remove_extrawhitespaces(x))
 
+            st.write('**Output Data Preview: **')
             st.dataframe(df.head(10))
 
             _, c1, _ = st.beta_columns([2, 1, 2])
@@ -176,7 +172,7 @@ def upload_file():
             if 'MB' in df_info:
                 size = int(buffer.getvalue().split(': ')[-1].split(' MB')[0].split('.')[0])
                 if size > 50:
-                    st.error(f'Output file of exceeded the file size limit of 50MB. Try uploading a smaller file in order to download the output file!')
+                    st.error(f'Output file has exceeded the file size limit of 50MB. Try uploading a smaller file in order to download the output file!')
                 else:
                     with c1:
                         href = f'<a href="data:file/csv;base64,{b64}">Download File</a>'
