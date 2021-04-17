@@ -15,9 +15,9 @@ App build on Python using Streamlit!''')
 
 e1 = st.beta_expander('Steps for using the App: ', expanded = True)
 with e1:
-    st.markdown('''1. Upload a CSV or Excel file to perform Data Cleaning\n2. Tick the checkboxes to select the text columns to preprocess
-    \n3. Click on **Preprocess Data** button to start data preprocessing\n4. See the preview of output dataset\n5. Click on **Download 
-    File** to download the output file (Provide the file extension as **.csv** while saving the output file)''')
+    st.markdown('''1. Upload a CSV or Excel file to perform Data Cleaning\n2. Tick the checkboxes to select the text columns to 
+    preprocess\n3. Click on **Preprocess Data** button to start data preprocessing\n4. See the preview of output dataset\n5. Click on 
+    **Download File** to download the output file (Provide the file extension as **.csv** while saving the output file)''')
     st.info('Download option is only available if the output file size is less than **50MB**')
 
 st.write('\n')
