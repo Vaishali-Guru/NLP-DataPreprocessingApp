@@ -120,12 +120,12 @@ def upload_file():
         selected_cols = []
         for col in cat_cols[:num_each_col]:
             with col1:
-                x = st.checkbox(f'{col}', value = True)
+                x = st.checkbox(f'{col}', value = False)
                 selected_cols.append(x)
         
         for col in cat_cols[num_each_col:]:
             with col2:
-                x = st.checkbox(f'{col}', value = True)
+                x = st.checkbox(f'{col}', value = False)
                 selected_cols.append(x)
 
         current_selection = []
